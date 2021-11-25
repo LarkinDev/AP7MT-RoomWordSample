@@ -23,10 +23,8 @@ abstract class WordRoomDatabase : RoomDatabase() {
                 scope.launch {
                     val wordDao = database.wordDao()
 
-                    // Delete all content here.
                     wordDao.deleteAll()
 
-                    // Add sample words.
                     var word = Word("Hello")
                     wordDao.insert(word)
                     word = Word("World!")
@@ -48,8 +46,6 @@ abstract class WordRoomDatabase : RoomDatabase() {
             context: Context,
             scope: CoroutineScope
         ): WordRoomDatabase {
-            // if the INSTANCE is not null, then return it,
-            // if it is, then create the database
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
@@ -59,7 +55,6 @@ abstract class WordRoomDatabase : RoomDatabase() {
                     .addCallback(WordDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
-                // return instance
                 instance
             }
         }
